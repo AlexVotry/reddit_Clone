@@ -1,0 +1,115 @@
+img {
+  width: 90%;
+}
+article, form {
+  margin-top: 100px;
+}
+.bannerTitles {
+  margin-top: 2%;
+  color: blue;
+}
+.bannerTitles a:visited, .bannerTitles a:link {
+    color: purple;
+}
+.dropIt {
+  background-color: #DEB887;
+}
+.up:hover {
+  color: green;
+  cursor: pointer;
+}
+.down:hover {
+  color: red;
+  cursor: pointer;
+}
+.positive {
+  color: green;
+}
+.negative {
+  color: red;
+}
+#comment {
+  margin-top: 10px;
+}
+.glyphicon-comment:hover, .glyphicon-pencil:hover {
+  color: #7FFF00;
+  cursor: pointer;
+}
+body {
+  background-color: purple;
+}
+.blurbs {
+  background-color: #DEB887;
+}
+.inputs {
+  color: #DEB887;
+}
+.postIt {
+  background-color: #DEB887;
+}
+.postIt:hover {
+  background-color: #7FFF00;
+}
+.error {
+  color: #7FFF00;
+}
+.commentWell {
+  background-color: #F5F5DC;
+}
+.commentWell {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+.commentWell.ng-hide {
+  opacity:0;
+}
+@-webkit-keyframes shrink {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@-moz-keyframes shrink {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@-o-keyframes shrink {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shrink {
+  0%   { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+/*matrix(scaleX(),skewY(),skewX(),scaleY(),translateX(),translateY()):*/
+
+.ng-enter {
+  transition:0.5s ease all;
+  opacity:0;
+  /*transform: matrix(0, 0, 0, 0, -100%, 0);*/
+  transform: tanslateX(-100%);
+}
+
+.ng-enter.ng-enter-active {
+  opacity:1;
+  /*transform: matrix(1, 0, 0, 1, 0, 0);*/
+  animation: shrink 3s;
+  /*transform: translateX(0);*/
+}
+
+.ng-leave {
+  transition:0.5s ease all;
+  opacity:1;
+  /*transform: matrix(1, 0, 0, 1, 0, 0);*/
+  transform: translateX(0);
+}
+
+.ng-leave.ng-leave-active {
+  opacity:0;
+  /*transform: matrix(0, 0, 0, 0, -100%, 0);*/
+  animation: shrink 3s reverse;
+  /*ng-leave.ng-leave-active: reverse;*/
+}
+
+/*.ng-enter-stagger, .ng-leave-stagger {
+  transition-delay: .5  s ease all;
+  transition-duration: 0 ease all;
+}*/

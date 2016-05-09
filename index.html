@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html ng-app="redditClone">
+  <head>
+    <meta charset="utf-8">
+    <title>Reddit Clone</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body ng-controller="redditController">
+    <div class="container-fluid wrapper">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header col-sm-12 col-xs-12">
+            <h2 class="navbar-brand">&#9763; Reddit Clone</h2>
+
+            <ul class="nav navbar-nav col-sm-10 bannerTitles">
+              <li><a class="col-sm-12 col-xs-12 col-sm-offset-1" href="#" ng-click="mv.submitPost = !mv.submitPost">&#9997; Submit Post</a></li>
+              <li class="dropdown col-sm-3 col-xs-3"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sort by {{ mv.display || "title"}}<span class="caret"></span></a>
+                <ul class="dropdown-menu dropIt" >
+                  <li ng-repeat="criteria in mv.sortables"><a href="#" ng-click="orderSort(this.criteria)">Sort by {{ criteria }}</a></li>
+                </ul>
+              </li>
+              <li><input class="form-control col-sm-3 col-xs-3" type="text" name="search" ng-model="search" placeholder="search"></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <form ng-show="mv.submitPost" name="postForm" ng-submit="post(postForm.$valid)" class="form-group" novalidate>
+        <legend class="inputs">Post an Article</legend>
+        <!-- TITLE -->
+          <div class="form-group" ng-class="{'has-error': postForm.title.$invalid && !postForm.title.$pristine, 'has-success': postForm.title.$valid }">
+            <label class="inputs">Title</label>
+            <input
+              autofocus
+              type="text"
+              class="form-control"
+              name="title"
+              placeholder="Title"
+              ng-model="mv.article.title"
+              minlength="3"
+              maxlength="20"
+              required>
+            <div class="error" ng-messages="postForm.title.$error" ng-show="postForm.title.$touched && !postForm.title.$pristine">
+              <p ng-message="minlength">The title is too short! </p>
+              <p ng-message="maxlength">the title is too long! </p>
+              <p ng-message="required">You need to enter a title! </p>
+            </div>
+          </div>
+          <!-- AUTHOR -->
+          <div class="form-group" ng-class="{'has-error': postForm.author.$invalid && !postForm.author.$pristine, 'has-success': postForm.author.$valid }">
+            <label class="inputs">Author</label>
+            <input
+              type="text"
+              class="form-control"
+              name="author"
+              placeholder="Author"
+              ng-model="mv.article.author"
+              minlength="3"
+              maxlength="20"
+              required>
+            <div class="error" ng-messages="postForm.author.$error" ng-show="postForm.author.$touched && !postForm.author.$pristine">
+              <p ng-message="minlength">Your name is too short! </p>
+              <p ng-message="maxlength">Your name is too long! </p>
+              <p ng-message="required">You need to enter Your name! </p>
+            </div>
+          </div>
+          <!-- IMG URL -->
+          <div class="form-group" ng-class="{'has-error': postForm.image.$invalid && !postForm.image.$pristine, 'has-success': postForm.image.$valid }">
+            <label class="inputs">Img URL</label>
+            <input
+              type="text"
+              class="form-control"
+              name="image"
+              placeholder="image URL"
+              ng-model="mv.article.image"
+              required>
+            <div class="error" ng-messages="postForm.image.$error" ng-show="postForm.image.$touched && !postForm.image.$pristine">
+              <p ng-message="required">You need to enter a img URL! </p>
+            </div>
+          </div>
+          <!-- DESCRIPTION -->
+          <div class="form-group" ng-class="{'has-error': postForm.description.$invalid && !postForm.description.$pristine, 'has-success': postForm.description.$valid }">
+            <label class="inputs">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              name="description"
+              placeholder="Description"
+              ng-model="mv.article.description"
+              minlength="15"
+              maxlength="300"
+              required>
+            <div class="error" ng-messages="postForm.description.$error" ng-show="postForm.description.$touched && !postForm.description.$pristine">
+              <p ng-message="minlength">The description is too short! </p>
+              <p ng-message="maxlength">The description is too long! </p>
+              <p ng-message="required">You need to enter a description! </p>
+            </div>
+          </div>
+          <!-- <input type="hidden" ng-model="mv.article.date"> -->
+
+          <div class="form-group">
+            <button type="submit" name="postSubmit" class="btn postIt" >Add Post!</button>
+            <p class="error" ng-show="postForm.postSubmit.$touched"> Your form isn't correct</p>
+          </div>
+      </form>
+
+      <article class="container-fluid">
+        <div ng-repeat='article in mv.articles | orderBy: mv.ordered | filter: search' class="well blurbs">
+          <div class="row">
+            <div class="col-sm-2">
+              <img ng-src="{{ article.image }}" />
+            </div>
+            <header class="col-sm-10">
+              <h4> {{ article.title }} |
+                <span ng-click="tallyVotes(article, 1)" class="up">&#9757; </span>
+                <span ng-click="tallyVotes(article, -1)" class="down"> &#9759; </span>
+                <span ng-class="{positive: article.votes >= 0, negative: article.votes < 0 }">{{article.votes}} </span>
+              </h4>
+            </header>
+            <div class="col-sm-2  col-sm-offset-8">
+              <h4><i> By {{ article.author }} </i></h4>
+            </div>
+              <p class="col-sm-10">{{ article.description }}</p>
+            <div class="col-sm-10 col-sm-offset-2">
+              <span class="col-sm-4 glyphicon glyphicon-calendar"> {{ article.date  | date: 'fullDate' }}  | </span>
+              <span class="col-sm-3 glyphicon glyphicon-comment" ng-click="article.readComments = !article.readComments"> Read Comments  |</span>
+              <span class="col-sm-3 glyphicon glyphicon-pencil" ng-click="article.newComments = !article.newComments"> Add a comment</span>
+            </div>
+          </div>
+
+          <div  id="comment" class='row'>
+            <p class="col-sm-10 col-sm-offset-2 well commentWell" ng-if="article.readComments" ng-repeat="comment in article.comments">
+              &#9760;  {{ comment.commentAuthor }} - {{ comment.says }}
+            </p>
+          </div>
+
+          <div class='row'>
+            <form class="col-sm-offset-2 input-group" name="commentForm" ng-submit="addComments(article, commentForm)" ng-if="article.newComments">
+              <div class="form-group well commentWell" >
+                <input autofocus type="text" class="form-control" ng-model="article.comment.commentAuthor" placeholder="Who are you?">
+                <input autofocus type="text" class="form-control" ng-model="article.comment.says" placeholder="What do you have to contribute?">
+                <button type="submit" name="commentButton" ng-click="article.newComments = false">Add it!</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="script.js"> </script>
+  </body>
+</html>
