@@ -1,4 +1,4 @@
-var app = angular.module('redditClone', ['ngAnimate', 'ngMessages']).controller('redditController', function($scope) {
+var app = angular.module('redditClone', ['ngAnimate', 'ngMessages']).controller('redditController', function($scope, $http) {
   // $scope.mv = {articles: []};
   $scope.mv = {};
   $scope.mv.submitPost = false;
@@ -66,4 +66,17 @@ var app = angular.module('redditClone', ['ngAnimate', 'ngMessages']).controller(
     $scope.mv.ordered = criteria;
   }
   $scope.mv.authComments = [$scope.mv.articles.newAuthor, $scope.mv.articles.comments];
+  // console.log($scope);
+  $scope.$watch('mv.articles[1].votes', function (newValue, oldValue) {
+    console.log('number changed from:', oldValue, 'to:', newValue )
+  })
+
+  // $http.get('https://www.reddit.com/.json').then(function(result) {
+  //   console.log(result.data.data.children);
+  //   var stuff = result.data.data.children;
+  //   for (var i = 0; i < stuff.length; i++) {
+  //     $scope.mv.redditPosts = stuff[i].data.media.oembed.thumbnail_url;
+  //   }
+  // })
+  // console.log($scope.mv.articles.votes[1]);
 });

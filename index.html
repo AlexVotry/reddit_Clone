@@ -38,15 +38,16 @@
               name="title"
               placeholder="Title"
               ng-model="mv.article.title"
-              minlength="3"
-              maxlength="20"
-              required>
+              ng-minlength="3"
+              ng-maxlength="20"
+              ng-required>
             <div class="error" ng-messages="postForm.title.$error" ng-show="postForm.title.$touched && !postForm.title.$pristine">
               <p ng-message="minlength">The title is too short! </p>
               <p ng-message="maxlength">the title is too long! </p>
               <p ng-message="required">You need to enter a title! </p>
             </div>
           </div>
+          
           <!-- AUTHOR -->
           <div class="form-group" ng-class="{'has-error': postForm.author.$invalid && !postForm.author.$pristine, 'has-success': postForm.author.$valid }">
             <label class="inputs">Author</label>
@@ -56,9 +57,9 @@
               name="author"
               placeholder="Author"
               ng-model="mv.article.author"
-              minlength="3"
-              maxlength="20"
-              required>
+              ng-minlength="3"
+              ng-maxlength="20"
+              ng-required>
             <div class="error" ng-messages="postForm.author.$error" ng-show="postForm.author.$touched && !postForm.author.$pristine">
               <p ng-message="minlength">Your name is too short! </p>
               <p ng-message="maxlength">Your name is too long! </p>
@@ -74,7 +75,7 @@
               name="image"
               placeholder="image URL"
               ng-model="mv.article.image"
-              required>
+              ng-required>
             <div class="error" ng-messages="postForm.image.$error" ng-show="postForm.image.$touched && !postForm.image.$pristine">
               <p ng-message="required">You need to enter a img URL! </p>
             </div>
@@ -88,9 +89,9 @@
               name="description"
               placeholder="Description"
               ng-model="mv.article.description"
-              minlength="15"
-              maxlength="300"
-              required>
+              ng-minlength="15"
+              ng-maxlength="300"
+              ng-required>
             <div class="error" ng-messages="postForm.description.$error" ng-show="postForm.description.$touched && !postForm.description.$pristine">
               <p ng-message="minlength">The description is too short! </p>
               <p ng-message="maxlength">The description is too long! </p>
@@ -149,6 +150,10 @@
       </article>
 
     </div>
+    <!-- <div class="well wellBlog" ng-repeat="posts in mv.redditPosts track by $index">
+      {{mv.redditPosts}}
+
+    </div> -->
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
